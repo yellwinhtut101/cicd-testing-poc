@@ -1,9 +1,5 @@
 pipeline {
-  agent {
-    dockerfile {
-            filename 'Dockerfile.jenkinsAgent'
-        }
-  }
+  agent any
   options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
   }
@@ -30,7 +26,7 @@ pipeline {
     }
     stage('Test') {
       steps {
-        sh 'echo "Testing 1 2 3 4"'
+        sh 'echo "Testing 1 2 3"'
       }
     }
     stage('SonarQube analysis') {
