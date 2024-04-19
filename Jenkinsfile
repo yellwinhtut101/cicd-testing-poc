@@ -31,10 +31,10 @@ pipeline {
     }
     stage('SonarQube analysis') {
       environment {
-          SCANNER_HOME = tool 'ywh-token'
+          SCANNER_HOME = tool 'Sonar-Jenkins'
       }
       steps {
-        withSonarQubeEnv(credentialsId: 'Sonar-Jenkins', installationName: 'Sonar') {
+        withSonarQubeEnv(credentialsId: 'ywh-token', installationName: 'sq1') {
             sh '''$SCANNER_HOME/bin/sonar-scanner \
                 -Dsonar.projectKey=projectKey \
                 -Dsonar.projectName=projectName \
