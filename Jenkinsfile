@@ -1,5 +1,9 @@
 pipeline {
-  agent any
+  agent any {
+    dockerfile {
+            filename 'Dockerfile.jenkinsAgent'
+        }
+  }
   options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
   }
@@ -19,11 +23,11 @@ pipeline {
   // }
 
   stages {
-    // stage('Build') {
-    //   steps {
-    //     sh 'docker build -t $IMAGE_NAME:$IMAGE_TAG .'
-    //   }
-    // }
+    stage('Build') {
+      steps {
+        sh 'docker build -t $IMAGE_NAME:$IMAGE_TAG .'
+      }
+    }
     stage('Test') {
       steps {
         sh 'echo "Testing 1 2 3"'
