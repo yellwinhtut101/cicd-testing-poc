@@ -31,7 +31,7 @@ pipeline {
     }
     stage('SonarQube analysis') {
       environment {
-          SCANNER_HOME = tool 'Sonar-Jenkins'
+          SCANNER_HOME = tool 'sq1'
       }
       steps {
         withSonarQubeEnv(credentialsId: 'Sonar-Jenkins', installationName: 'Sonar') {
