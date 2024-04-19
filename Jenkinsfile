@@ -4,35 +4,57 @@ pipeline {
     buildDiscarder(logRotator(numToKeepStr: '5'))
   }
   environment {
-    HEROKU_API_KEY = credentials('heroku-api-key')
-    IMAGE_NAME = 'darinpope/jenkins-example-laravel'
-    IMAGE_TAG = 'latest'
-    APP_NAME = 'jenkins-example-laravel'
+    AN_ACCESS_KEY = credentials('ywh-credentials')
+    AWS_DEFAULT_REGION    = 'us-east-1'
+    IMAGE_NAME            = 'yellwinhtut/jenkins-example-react'
+    IMAGE_TAG             = 'v2.0'
+    ECR_REPO              = '006961800653.dkr.ecr.us-east-1.amazonaws.com/testing-repo'
+    EC2_INSTANCE_IP       = '54.80.70.193'
+    // SSH_CREDENTIALS       = credentials('your-ssh-credentials')
+    GIT_COMMIT_SHORT = sh(script: "printf \$(git rev-parse --short ${GIT_COMMIT})", returnStdout: true).trim()
   }
+
+  // tools {
+  //       nodejs 'node' // Assuming you have Node.js tool configured in Jenkins
+  // }
+
   stages {
     stage('Build') {
       steps {
         sh 'docker build -t $IMAGE_NAME:$IMAGE_TAG .'
       }
     }
-    stage('Login') {
+    stage('Test') {
       steps {
-        sh 'echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com'
+        sh 'echo "Testing 1 2 3"'
       }
     }
-    stage('Push to Heroku registry') {
+    stage('SonarQube analysis') {
+      environment {
+          SCANNER_HOME = tool 'Sonar-Jenkins'
+      }
       steps {
-        sh '''
-          docker tag $IMAGE_NAME:$IMAGE_TAG registry.heroku.com/$APP_NAME/web
-          docker push registry.heroku.com/$APP_NAME/web
-        '''
+        withSonarQubeEnv(credentialsId: 'Sonar-Jenkins', installationName: 'Sonar') {
+            sh '''$SCANNER_HOME/bin/sonar-scanner \
+                -Dsonar.projectKey=projectKey \
+                -Dsonar.projectName=projectName \
+                -Dsonar.sources=src/ \
+                -Dsonar.projectVersion=${BUILD_NUMBER}-${GIT_COMMIT_SHORT}'''
+        }
       }
     }
-    stage('Release the image') {
+    stage('Quality Gate') {
       steps {
-        sh '''
-          heroku container:release web --app=$APP_NAME
-        '''
+        timeout(time: 1, unit: 'MINUTES') {
+            waitForQualityGate abortPipeline: true
+        }
+      }
+    }
+    stage('Push to Amazon ECR') {
+      steps {
+          sh """aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${ECR_REPO}"""
+          sh "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${ECR_REPO}:${IMAGE_TAG}"
+          sh "docker push ${ECR_REPO}:${IMAGE_TAG}"
       }
     }
   }
