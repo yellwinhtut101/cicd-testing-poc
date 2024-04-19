@@ -30,7 +30,7 @@ pipeline {
     }
     stage('Test') {
       steps {
-        sh 'echo "Testing 1 2 3"'
+        sh 'echo "Testing 1 2 3 4"'
       }
     }
     stage('SonarQube analysis') {
