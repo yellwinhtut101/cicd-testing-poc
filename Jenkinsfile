@@ -5,7 +5,7 @@ pipeline {
   }
   environment {
     // AN_ACCESS_KEY = credentials('ywh-credentials')
-    AWS_DEFAULT_REGION    = 'us-east-1'
+    AWS_DEFAULT_REGION    = 'ap-southeast-1'
     IMAGE_NAME            = 'yellwinhtut/jenkins-example-laravel'
     IMAGE_TAG             = 'v1.0'
     ECR_REPO              = '006961800653.dkr.ecr.us-east-1.amazonaws.com/testing-repo'
