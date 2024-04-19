@@ -19,11 +19,11 @@ pipeline {
   // }
 
   stages {
-    stage('Build') {
-      steps {
-        sh 'docker build -t $IMAGE_NAME:$IMAGE_TAG .'
-      }
-    }
+    // stage('Build') {
+    //   steps {
+    //     sh 'docker build -t $IMAGE_NAME:$IMAGE_TAG .'
+    //   }
+    // }
     stage('Test') {
       steps {
         sh 'echo "Testing 1 2 3"'
