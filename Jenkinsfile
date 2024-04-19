@@ -4,7 +4,7 @@ pipeline {
     buildDiscarder(logRotator(numToKeepStr: '5'))
   }
   environment {
-    AN_ACCESS_KEY = credentials('ywh-credentials')
+    // AN_ACCESS_KEY = credentials('ywh-credentials')
     AWS_DEFAULT_REGION    = 'us-east-1'
     IMAGE_NAME            = 'yellwinhtut/jenkins-example-laravel'
     IMAGE_TAG             = 'v1.0'
