@@ -14,9 +14,7 @@ pipeline {
     GIT_COMMIT_SHORT = sh(script: "printf \$(git rev-parse --short ${GIT_COMMIT})", returnStdout: true).trim()
   }
 
-  tools {
-        nodejs 'node' // Assuming you have Node.js tool configured in Jenkins
-  }
+  tools {nodejs "node_v10"}
 
   stages {
     stage('Build') {
