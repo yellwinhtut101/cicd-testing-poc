@@ -3,7 +3,7 @@ pipeline {
   options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
   }
-  
+
   environment {
     AN_ACCESS_KEY = credentials('ywh-token')
     AWS_DEFAULT_REGION    = 'ap-southeast-1'
@@ -69,7 +69,7 @@ pipeline {
         //             // if (response != 'SUCCESS' && response != qgCondition) {
         //             //     error "SonarQube Quality Gate failed. Condition '${qgCondition}' not met."
         //             // }
-        // }
+        }
       }
     }
     stage('Push to Amazon ECR') {
