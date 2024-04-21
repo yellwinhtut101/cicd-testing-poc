@@ -30,9 +30,9 @@ pipeline {
       }
     }
     stage('SonarQube analysis') {
-      environment {
-          SCANNER_HOME = tool 'sq1'
-      }
+      // environment {
+      //     SCANNER_HOME = tool 'sq1'
+      // }
       steps {
         withSonarQubeEnv(credentialsId: 'ywh-token', installationName: 'sq1') {
             sh '''$SCANNER_HOME/bin/sonar-scanner \
