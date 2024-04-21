@@ -46,10 +46,14 @@ pipeline {
 
         script {
                     def qg = waitForQualityGate()
+                    def securityRating = qg.qualityGate.conditions.find { it.metric == 'security_rating' }.status
+
                     if (qg.status != 'OK') {
                         error "Pipeline aborted due to Quality Gate failure: ${qg.status}"
+                    } else if (securityRating == 'ERROR' || securityRating == 'WARN') {
+                        error "Pipeline aborted due to failing security rating: ${securityRating}"
                     } else {
-                        echo "Quality Gate passed: ${qg.status}"
+                        echo "Quality Gate passed with security rating: ${securityRating}"
                     }
                     // def qgCondition = 'NEW_CODE_COVERAGE > 5' // Replace with your condition
                     // def sonarqubeUrl = 'http://54.254.128.120:9000' // Replace with your server URL
