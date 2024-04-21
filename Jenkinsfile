@@ -48,7 +48,7 @@ pipeline {
                     def qg = waitForQualityGate()
                     def securityRating = qg.qualityGate.conditions.find { it.metric == 'security_rating' }.status
 
-                    if (qg.status != 'OK') {
+                    if (qg.status != "'OK'") {
                         error "Pipeline aborted due to Quality Gate failure: ${qg.status}"
                     } else if (securityRating == 'ERROR' || securityRating == 'WARN') {
                         error "Pipeline aborted due to failing security rating: ${securityRating}"
