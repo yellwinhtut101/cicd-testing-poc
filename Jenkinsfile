@@ -47,6 +47,7 @@ pipeline {
         script {
                     def qg = waitForQualityGate()
                     def securityRating = qg.qualityGate.conditions.find { it.metric == 'security_rating' }.status
+                    print(securityRating)
 
                     if (qg.status != "'OK'") {
                         error "Pipeline aborted due to Quality Gate failure: ${qg.status}"
