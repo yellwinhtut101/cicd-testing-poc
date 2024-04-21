@@ -14,9 +14,9 @@ pipeline {
     GIT_COMMIT_SHORT = sh(script: "printf \$(git rev-parse --short ${GIT_COMMIT})", returnStdout: true).trim()
   }
 
-  // tools {
-  //       nodejs 'node' // Assuming you have Node.js tool configured in Jenkins
-  // }
+  tools {
+        nodejs 'node' // Assuming you have Node.js tool configured in Jenkins
+  }
 
   stages {
     stage('Build') {
@@ -24,9 +24,9 @@ pipeline {
         sh 'docker build -t $IMAGE_NAME:$IMAGE_TAG .'
       }
     }
-    stage('Test') {
+    stage('Install TypeScript') {
       steps {
-        sh 'echo "Testing 1 2 3"'
+        sh 'npm install typescript'
       }
     }
     stage('SonarQube analysis') {
