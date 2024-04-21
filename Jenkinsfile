@@ -4,7 +4,7 @@ pipeline {
     buildDiscarder(logRotator(numToKeepStr: '5'))
   }
   environment {
-    // AN_ACCESS_KEY = credentials('ywh-credentials')
+    AN_ACCESS_KEY = credentials('ywh-token')
     AWS_DEFAULT_REGION    = 'ap-southeast-1'
     IMAGE_NAME            = 'yellwinhtut/jenkins-example-laravel'
     IMAGE_TAG             = 'v1.0'
@@ -41,8 +41,22 @@ pipeline {
     }
     stage('Quality Gate') {
       steps {
-        timeout(time: 1, unit: 'MINUTES') {
-            waitForQualityGate abortPipeline: true
+        // timeout(time: 1, unit: 'MINUTES') {
+        //     waitForQualityGate abortPipeline: true
+
+        script {
+                    def qgCondition = 'NEW_CODE_COVERAGE > 5' // Replace with your condition
+                    def sonarqubeUrl = 'http://13.212.150.208:9000/' // Replace with your server URL
+                    def token = 'ywh-token' // Replace with your API token (requires Administer Quality Gate permission)
+
+                    def response = sh(
+                        script: "curl -X GET -u ${token}:${token} ${sonarqubeUrl}/api/qualitygates/project_status?projectKey=${JOB_NAME} | jq -r '.conditions[0].status'",
+                        returnStdout: true
+                    ).trim()
+
+                    if (response != 'SUCCESS' && response != qgCondition) {
+                        error "SonarQube Quality Gate failed. Condition '${qgCondition}' not met."
+                    }
         }
       }
     }
