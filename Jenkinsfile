@@ -10,7 +10,7 @@ pipeline {
     IMAGE_NAME            = 'yellwinhtut/jenkins-example-laravel'
     IMAGE_TAG             = 'v1.0'
     ECR_REPO              = '006961800653.dkr.ecr.ap-southeast-1.amazonaws.com/y3ll-lab'
-    EC2_INSTANCE_IP       = '54.80.70.193'
+    // EC2_INSTANCE_IP       = '54.80.70.193'
     // SSH_CREDENTIALS       = credentials('your-ssh-credentials')
     GIT_COMMIT_SHORT = sh(script: "printf \$(git rev-parse --short ${GIT_COMMIT})", returnStdout: true).trim()
   }
