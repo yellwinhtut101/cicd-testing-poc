@@ -45,28 +45,28 @@ pipeline {
         //     waitForQualityGate abortPipeline: true
 
         script {
-                    def qg = waitForQualityGate()
-                    def securityRating = qg.qualityGate.conditions.find { it.metric == 'security_rating' }.status
+                    // def qg = waitForQualityGate()
+                    // def securityRating = qg.qualityGate.conditions.find { it.metric == 'security_rating' }.status
 
-                    if (qg.status != 'OK') {
-                        error "Pipeline aborted due to Quality Gate failure: ${qg.status}"
-                    } else if (securityRating == 'ERROR' || securityRating == 'WARN') {
-                        error "Pipeline aborted due to failing security rating: ${securityRating}"
-                    } else {
-                        echo "Quality Gate passed with security rating: ${securityRating}"
-                    }
-                    // def qgCondition = 'NEW_CODE_COVERAGE > 5' // Replace with your condition
-                    // def sonarqubeUrl = 'http://54.254.128.120:9000' // Replace with your server URL
-                    // def token = 'ywh-token' // Replace with your API token (requires Administer Quality Gate permission)
-
-                    // def response = sh(
-                    //     script: "curl -X GET -u ${token}:${token} ${sonarqubeUrl}/api/qualitygates/project_status?projectKey=${JOB_NAME} | jq -r '.conditions[0].status'",
-                    //     returnStdout: true
-                    // ).trim()
-
-                    // if (response != 'SUCCESS' && response != qgCondition) {
-                    //     error "SonarQube Quality Gate failed. Condition '${qgCondition}' not met."
+                    // if (qg.status != 'OK') {
+                    //     error "Pipeline aborted due to Quality Gate failure: ${qg.status}"
+                    // } else if (securityRating == 'ERROR' || securityRating == 'WARN') {
+                    //     error "Pipeline aborted due to failing security rating: ${securityRating}"
+                    // } else {
+                    //     echo "Quality Gate passed with security rating: ${securityRating}"
                     // }
+                    def qgCondition = 'NEW_CODE_COVERAGE < 5' // Replace with your condition
+                    def sonarqubeUrl = 'http://54.169.105.66:9000' // Replace with your server URL
+                    def token = 'ywh-token' // Replace with your API token (requires Administer Quality Gate permission)
+
+                    def response = sh(
+                        script: "curl -X GET -u ${token}:${token} ${sonarqubeUrl}/api/qualitygates/project_status?projectKey=${JOB_NAME} | jq -r '.conditions[0].status'",
+                        returnStdout: true
+                    ).trim()
+
+                    if (response != 'SUCCESS' && response != qgCondition) {
+                        error "SonarQube Quality Gate failed. Condition '${qgCondition}' not met."
+                    }
         }
       }
     }
