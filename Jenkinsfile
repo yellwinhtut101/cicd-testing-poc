@@ -3,6 +3,7 @@ pipeline {
   options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
   }
+  
   environment {
     AN_ACCESS_KEY = credentials('ywh-token')
     AWS_DEFAULT_REGION    = 'ap-southeast-1'
