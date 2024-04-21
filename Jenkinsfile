@@ -36,8 +36,8 @@ pipeline {
       steps {
         withSonarQubeEnv(credentialsId: 'ywh-token', installationName: 'SonarQube') {
             sh '''$SCANNER_HOME/bin/sonar-scanner \
-                -Dsonar.projectKey=projectKey \
-                -Dsonar.projectName=projectName \
+                -Dsonar.projectKey=sample-app \
+                -Dsonar.projectName=sample-app \
                 -Dsonar.sources=src/ \
                 -Dsonar.projectVersion=${BUILD_NUMBER}-${GIT_COMMIT_SHORT}'''
         }
