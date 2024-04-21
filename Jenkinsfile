@@ -46,7 +46,7 @@ pipeline {
 
         script {
                     def qgCondition = 'NEW_CODE_COVERAGE > 5' // Replace with your condition
-                    def sonarqubeUrl = 'http://13.212.150.208:9000/' // Replace with your server URL
+                    def sonarqubeUrl = 'http://54.254.128.120:9000' // Replace with your server URL
                     def token = 'ywh-token' // Replace with your API token (requires Administer Quality Gate permission)
 
                     def response = sh(
