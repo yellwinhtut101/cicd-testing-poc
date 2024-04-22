@@ -5,7 +5,7 @@ pipeline {
   }
 
   environment {
-    AN_ACCESS_KEY = credentials('ywh-token')
+    AN_ACCESS_KEY = credentials('ywh-aws-credentials')
     AWS_DEFAULT_REGION    = 'ap-southeast-1'
     IMAGE_NAME            = 'yellwinhtut/jenkins-example-laravel'
     IMAGE_TAG             = 'v1.0'
